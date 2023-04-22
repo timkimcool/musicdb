@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-a*yc@fvxfk!!)%xgs%m041^+xfjflzyc8$_+mq7db2o+zy*0pp"
+
 
 # SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -41,9 +45,12 @@ INSTALLED_APPS = [
     # Third-party
     "crispy_forms",
     "crispy_bootstrap5",
+    "allauth",
+    "allauth.account",
     # Local
     "accounts.apps.AccountsConfig",
     "home.apps.HomeConfig",
+    "music.apps.MusicConfig"
 ]
 
 MIDDLEWARE = [
@@ -89,6 +96,8 @@ DATABASES = {
         "HOST": "localhost",
         "PORT": 5432
     }
+    # "default": os.environ.get("DATABASE_URL",
+    #                           default="postgres://postgres@db/postgres")
 }
 
 
@@ -144,3 +153,20 @@ LOGOUT_REDIRECT_URL = "home"
 # django-cripsy-forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# django-allauth config
+SITE_ID = 1
+ACCOUNT_LOGOUT_REDIRECT = "home"
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+ACCOUNT_SESSION_REMEMBER = True
+
+DEFAULT_FROM_EMAIL = "admin@musicDB.com"
+# email only login
+# ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_AUTHENTICATION_METHOD = "email"
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_UNIQUE_EMAIL = True
