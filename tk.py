@@ -240,3 +240,5 @@ fields: comma delimitted; omitted = all returned
 # sp.current_user_unfollow_playlist()
 # sp.user_playlist()
 # sp.user_playlist_tracks()
+track_print("TRACK", sp.current_user_top_tracks(limit=50)["items"])
+artist_print("Artist", sp.current_user_top_artists(limit=50)["items"])
